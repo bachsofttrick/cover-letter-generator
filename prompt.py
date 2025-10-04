@@ -27,7 +27,7 @@ Detail-oriented and adaptable student with strong organizational, communication,
 with open('prompt.txt', 'r', encoding='utf-8') as f:
     job = f.read()
 
-prompt = ogprompt + 'Use the preceeding information to change summary of my resume so it aligns with this job:\n' + job
+prompt = ogprompt + 'Use the preceeding information to write me a cover letter so it aligns with this job:\n' + job
 print(prompt)
 if False:
 	print('----- Press Enter -----')

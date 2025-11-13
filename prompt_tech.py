@@ -10,8 +10,9 @@ ogprompt = '''SKILLS:
 - Virtualization: KVM, VPS
 - Systems: Linux, Windows
 Experience:
-OSU COLLEGE OF AGRICULTURAL SCIENCES 9/2025
+OREGONFLORA 9/2025
 Maintained and enhanced a research platform supporting thousands of daily users, researchers, and conservationists across Oregon.
+Improved the uploading process, reducing runtime from 2 hour to 2 minute.
 OSU EXTENSION SERVICE OUTDOOR SCHOOL 9/2024 – 10/2024
 • Maintenance on the portal through which school districts and teachers can access the application, reporting systems, resources for developing outdoor school programs.
 • Supported migration from Umbraco 8 to Drupal 10, contributing to improved platform stability and performance.

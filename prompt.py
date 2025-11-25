@@ -35,7 +35,7 @@ SKILLS
 with open('prompt.txt', 'r', encoding='utf-8') as f:
     job = f.read()
 
-prompt = 'Act like a hiring manager for this role in this description:\n' + job + '\nNow I got this job. Use points in my old resume before this job, craft a resume to fit in company\'s misson, culture that got me this job:\n' + resume
+prompt = 'Act like a hiring manager for this role in this description:\n' + job + '\What would be a perfect resume that fits the company\'s misson, culture, technical requirements:\n' + resume
 print(prompt)
 if False:
 	print('----- Press Enter -----')

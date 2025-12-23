@@ -11,4 +11,4 @@ months_per_year = 12
 annual_salary = hourly_rate * hours_per_day * days_per_week * weeks_per_month * months_per_year
 
 # Print the result
-print(f"Your estimated annual salary is: ${annual_salary:.2f}")
+print(f"Your estimated annual salary is: ${annual_salary:.0f}")

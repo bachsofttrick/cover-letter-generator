@@ -1,6 +1,6 @@
 import os
 import requests
-import json
+from openai import OpenAI
 
 # Get resume from portfolio
 resumeUrl = "https://raw.githubusercontent.com/bachsofttrick/bachsofttrick.github.io/refs/heads/main/app/about/resume.md"
@@ -17,22 +17,23 @@ Starting with "Dear".
 '''
 
 # Running to GPT to write
-gptUrl = "http://localhost:8033/v1/chat/completions"
-post = {
-    "messages": [
-        {
-            "role": "user",
-            "content": prompt
-        }
-    ]
-}
+gptUrl = "http://localhost:8033/v1"
+messages = [
+    {
+        "role": "user",
+        "content": prompt
+    }
+]
 
 print("Writing cover letter...")
-postReturn = requests.post(gptUrl, json=post)
-result = postReturn.json()
+client = OpenAI(
+    base_url=gptUrl,
+    api_key=''
+)
+result = client.chat.completions.create(model='', messages=messages)
 
 # Get the result and shave off the newline
-result = result["choices"][0]["message"]["content"][2:]
+result = result.choices[0].message.content[2:]
 with open('result.txt', 'w', encoding='utf-8') as f:
     f.write(result)
 

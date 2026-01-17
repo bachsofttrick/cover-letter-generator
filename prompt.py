@@ -2,8 +2,11 @@ import os
 import requests
 from openai import OpenAI
 
-# Get resume from portfolio
+# Global config
 resumeUrl = "https://raw.githubusercontent.com/bachsofttrick/bachsofttrick.github.io/refs/heads/main/app/about/resume.md"
+gptUrl = "http://localhost:8033/v1"
+
+# Get resume from portfolio
 res = requests.get(resumeUrl)
 resume = res.text
 
@@ -17,7 +20,6 @@ Starting with "Dear".
 '''
 
 # Running to GPT to write
-gptUrl = "http://localhost:8033/v1"
 messages = [
     {
         "role": "user",

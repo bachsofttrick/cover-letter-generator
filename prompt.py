@@ -1,6 +1,7 @@
 import os
 import requests
 from openai import OpenAI
+from pytesseract import image_to_string
 
 # Global config
 resumeUrl = "https://raw.githubusercontent.com/bachsofttrick/bachsofttrick.github.io/refs/heads/main/app/about/resume.md"
@@ -8,6 +9,7 @@ gptUrl = "http://localhost:8033/v1"
 healthCheckUrl = gptUrl + "/health"
 jobFile = "job.txt"
 resultFile = "result.txt"
+imagePath = "./jd/"
 
 def main():
     # llama.cpp health check
@@ -15,9 +17,20 @@ def main():
         with requests.get(healthCheckUrl) as res:
             if res.status_code != 200 or res.json()["status"] != "ok":
                 raise Exception(res.json())
+        client = OpenAI(
+            base_url=gptUrl,
+            api_key=''
+        )
     except Exception as e:
         print(f"Something is wrong with llama.cpp.\n{e}")
         return
+
+    messages = [
+        {
+            "role": "user",
+            "content": ''
+        }
+    ]
 
     print("Getting resume from portfolio...")
     try:
@@ -26,15 +39,28 @@ def main():
                 raise Exception('Wrong data')
             resume = res.text
     except Exception as e:
-        print(f'Resume Not Found:\n{e}')
+        print(f"Cannot read the resume:\n{e}")
         return
 
     print("Reading job description...")
+    job = ''
     try:
-        with open(jobFile, 'r', encoding='utf-8') as f:
-            job = f.read()
+        if not os.path.exists(imagePath):
+            os.makedirs(imagePath)
+        files = os.listdir(imagePath)
+        if len(files) == 0:
+            raise Exception("No job description image found.")
+        for image in os.listdir(imagePath):
+            job += image_to_string(imagePath + image)
+            job += "---"
+
+        messages[0]["content"] = "Combine the pieces of a job description and only show me the result:\n" + job
+        result = client.chat.completions.create(model='', messages=messages)
+
+        # Get the result and shave off the newline
+        result = result.choices[0].message.content[2:]
     except Exception as e:
-        print(f"Error while reading prompt:\n{e}")
+        print(f"Cannot read the job description:\n{e}")
         return
     
     prompt = 'This is the job description:\n' + job + 'This is my resume:\n' + resume + '''
@@ -44,19 +70,9 @@ def main():
     '''
 
     # Running to GPT to write
-    messages = [
-        {
-            "role": "user",
-            "content": prompt
-        }
-    ]
+    messages[0]["content"] = prompt
 
     print("Writing cover letter...")
-    client = OpenAI(
-        base_url=gptUrl,
-        api_key=''
-    )
-
     try:
         result = client.chat.completions.create(model='', messages=messages)
 

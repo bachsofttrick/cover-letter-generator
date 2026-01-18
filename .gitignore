@@ -1,6 +1,7 @@
 job.txt
 result.txt
 test.py
+jd/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

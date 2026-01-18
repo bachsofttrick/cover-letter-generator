@@ -2,7 +2,11 @@
 An AI-powered program that generates cover letter based on the job description.
 
 ## Requirements
-- Python 3 with `venv` module
+- Python 3 with modules:
+  - venv
+  - OpenAI
+  - requests
+  - pytesseract
 - [llama.cpp](https://github.com/ggml-org/llama.cpp) running a LLM server
 - A LLM model to run on llama.cpp. Currently I use `Qwen3-8B-Q4_K_M`
 - [Tesseract-OCR](https://github.com/tesseract-ocr/tesseract) preinstalled

@@ -14,6 +14,7 @@ An AI-powered program that generates cover letter based on the job description.
 ## How to use
 - Install the requirements.
 - Create a `./jq` folder to put the job description image in.
+- Add a prompt to write in `promptNote.txt`.
 - Run `./prompt`. It will output to `result.txt`.
 
 ## Todo

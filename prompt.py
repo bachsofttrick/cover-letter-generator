@@ -9,6 +9,7 @@ gptUrl = "http://localhost:8033/v1"
 healthCheckUrl = gptUrl + "/health"
 jobFile = "job.txt"
 resultFile = "result.txt"
+promptFile = "promptNote.txt"
 imagePath = "./jd/"
 
 def main():
@@ -52,23 +53,20 @@ def main():
             raise Exception("No job description image found.")
         for image in os.listdir(imagePath):
             job += image_to_string(imagePath + image)
-            job += "---"
-
-        messages[0]["content"] = "Combine the pieces of a job description and only show me the result:\n" + job
-        result = client.chat.completions.create(model='', messages=messages)
-
-        # Get the result and shave off the newline
-        result = result.choices[0].message.content[2:]
+            job += "---\n"
     except Exception as e:
         print(f"Cannot read the job description:\n{e}")
         return
     
-    prompt = 'This is the job description:\n' + job + 'This is my resume:\n' + resume + '''
-    Only use the WORK EXPERIENCE (ignore the internship), SKILLS sections in my resume.
-    Write a concise, engaging, and professional cover letter with no bold style used.
-    Starting with "Dear".
-    '''
-
+    print("Prompting...")
+    try:
+        with open(promptFile, 'r', encoding='utf-8') as f:
+            prompt_note = "\n" + f.read()
+    except Exception as e:
+        print(f"Cannot read the resume:\n{e}")
+        return
+    prompt = "This is the job description:\n" + job + "This is my resume:\n" + resume + prompt_note
+    
     # Running to GPT to write
     messages[0]["content"] = prompt
 

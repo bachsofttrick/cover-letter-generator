@@ -1,0 +1,20 @@
+#!/bin/bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Check if tesseract-ocr is installed
+if ! dpkg -s tesseract-ocr > /dev/null 2>&1; then
+    echo "tesseract-ocr is NOT installed. Installing..."
+    sudo apt update
+    sudo apt install -y tesseract-ocr
+    
+    if [ $? -eq 0 ]; then
+        echo "tesseract-ocr installed successfully."
+    else
+        echo "Failed to install tesseract-ocr."
+        exit 1
+    fi
+else
+    echo "tesseract-ocr is already installed."
+fi

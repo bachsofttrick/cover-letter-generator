@@ -1,5 +1,6 @@
 import os
 import steps
+from classes import LLM, Resume
 
 # Global config
 resumeUrl = "https://raw.githubusercontent.com/bachsofttrick/bachsofttrick.github.io/refs/heads/main/app/about/resume.md"
@@ -11,21 +12,14 @@ imagePath = "./jd/"
 def main():
     # llama.cpp health check
     try:
-        client = steps.llama_health_check(gptUrl)
+        llm = LLM(gptUrl)
     except Exception as e:
         print(f"Something is wrong with llama.cpp.\n{e}")
         return
 
-    messages = [
-        {
-            "role": "user",
-            "content": ''
-        }
-    ]
-
     print("Getting resume from portfolio...")
     try:
-        resume = steps.get_resume(resumeUrl)
+        resume = Resume(resumeUrl)
     except Exception as e:
         print(f"Cannot read the resume:\n{e}")
         return
@@ -44,14 +38,11 @@ def main():
     except Exception as e:
         print(f"Cannot read the resume:\n{e}")
         return
-    prompt = "This is the job description:\n" + job + "This is my resume:\n" + resume + prompt_note
-    
-    # Running to GPT to write
-    messages[0]["content"] = prompt
+    prompt = "This is the job description:\n" + job + "This is my resume:\n" + resume.get_prompt() + prompt_note
 
     print("Writing cover letter...")
     try:
-        result = steps.get_chat_response(client, messages)
+        result = llm.get_chat_response(prompt)
         with open(resultFile, 'w', encoding='utf-8') as f:
             f.write(result)
 

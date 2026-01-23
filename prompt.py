@@ -42,7 +42,7 @@ def main():
 
     print("Writing cover letter...")
     try:
-        result = llm.get_chat_response(prompt)
+        result = llm.get_chat_response(prompt, True)
         with open(resultFile, 'w', encoding='utf-8') as f:
             f.write(result)
 

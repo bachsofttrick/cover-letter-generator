@@ -21,11 +21,24 @@ class LLM:
     def edit_message(self, message: str):
         self.messages[0]["content"] = message
 
-    def get_chat_response(self, message: str = '') -> str:
-        if (len(message) > 0): self.edit_message(message)
-        result = self.client.chat.completions.create(model='', messages=self.messages)
+    def get_chat_response(self, message: str = '', progress: bool = False) -> str:
+        if len(message) > 0: self.edit_message(message)
+        completion = self.client.chat.completions.create(model='', messages=self.messages, stream=True)
+        result = ""
+        
+        # Observe progress
+        if progress:
+            count = 0
+            for chunk in completion:
+                delta = chunk.choices[0].delta
+                if delta and delta.content:
+                    result += delta.content
+                    count += 1
+                    print(f"{count} tokens used.", end='\r')
+            print(f"{count} tokens used.", end='\n')
+
         # Get the result and shave off the newline
-        result = result.choices[0].message.content[2:]
+        result = result.lstrip('\n')
 
         return result
 

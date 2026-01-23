@@ -1,5 +1,6 @@
 import requests
 from openai import OpenAI
+import json
 
 class LLM:
     def __init__(self, gptUrl: str):
@@ -48,11 +49,11 @@ class Resume:
             if res.status_code != 200 or "---\ntitle" not in res.text:
                 raise Exception('Wrong data')
         self.full_resume = res.text
-        self.sections = self.extract_sections()
+        self.sections = self.__extract_sections()
         self.work_exp = self.sections[0]
         self.skills = self.sections[2]
 
-    def extract_sections(self) -> list[dict]:
+    def __extract_sections(self) -> list[dict]:
         # Remove YAML metadata at the top
         text = self.full_resume.split("\n---")[1]
         
@@ -81,3 +82,19 @@ class Resume:
 
     def get_prompt(self) -> str:
         return f"#### {self.work_exp["header"]}\n{self.work_exp["content"]}\n\n" + f"#### {self.skills["header"]}\n{self.skills["content"]}\n"
+
+class Config:
+    def __init__(self):
+        config = self.__load_config()
+        self.resumeUrl = config["resumeUrl"]
+        self.gptUrl = config["gptUrl"]
+        self.resultFile = config["resultFile"]
+        self.promptFile = config["promptFile"]
+        self.jdPath = config["jdPath"]
+        self.jdTextFile = config["jdTextFile"]
+
+    def __load_config(self) -> dict:
+        with open("config.json", 'r') as f:
+            config = json.load(f)
+        return config
+    

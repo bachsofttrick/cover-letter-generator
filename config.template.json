@@ -1,0 +1,8 @@
+{
+    "resumeUrl": "",
+    "gptUrl": "http://localhost:8033/v1",
+    "resultFile": "result.txt",
+    "promptFile": "promptNote.txt",
+    "jdPath": "./jd/",
+    "jdTextFile": "jd.txt"
+}

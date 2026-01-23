@@ -1,39 +1,37 @@
 import os
 import steps
-from classes import LLM, Resume
-
-# Global config
-resumeUrl = "https://raw.githubusercontent.com/bachsofttrick/bachsofttrick.github.io/refs/heads/main/app/about/resume.md"
-gptUrl = "http://localhost:8033/v1"
-resultFile = "result.txt"
-promptFile = "promptNote.txt"
-imagePath = "./jd/"
+from classes import LLM, Resume, Config
 
 def main():
-    # llama.cpp health check
     try:
-        llm = LLM(gptUrl)
+        config = Config()
+    except Exception as e:
+        print(f"Cannot read config.json:\n{e}")
+        return
+    
+    try:
+        llm = LLM(config.gptUrl)
     except Exception as e:
         print(f"Something is wrong with llama.cpp.\n{e}")
         return
 
     print("Getting resume from portfolio...")
     try:
-        resume = Resume(resumeUrl)
+        resume = Resume(config.resumeUrl)
     except Exception as e:
         print(f"Cannot read the resume:\n{e}")
         return
 
     print("Reading job description...")
     try:
-        job = steps.read_job_description(imagePath)
+        job = steps.read_job_description(config.jdPath, config.jdTextFile)
     except Exception as e:
         print(f"Cannot read the job description:\n{e}")
         return
 
     print("Prompting...")
     try:
-        with open(promptFile, 'r', encoding='utf-8') as f:
+        with open(config.promptFile, 'r', encoding='utf-8') as f:
             prompt_note = "\n" + f.read()
     except Exception as e:
         print(f"Cannot read the resume:\n{e}")
@@ -43,7 +41,7 @@ def main():
     print("Writing cover letter...")
     try:
         result = llm.get_chat_response(prompt, True)
-        with open(resultFile, 'w', encoding='utf-8') as f:
+        with open(config.resultFile, 'w', encoding='utf-8') as f:
             f.write(result)
 
         print('Finished writing.')

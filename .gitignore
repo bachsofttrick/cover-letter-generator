@@ -2,6 +2,7 @@ result.txt
 test.py
 promptNote.txt
 jd/*
+config.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

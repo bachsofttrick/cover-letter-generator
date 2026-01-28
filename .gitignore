@@ -3,6 +3,7 @@ test.py
 promptNote.txt
 jd/*
 config.json
+*.docx
 
 # Ignore VS Code
 .vscode/*

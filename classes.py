@@ -45,7 +45,7 @@ class LLM:
 
 class Resume:
     def __init__(self, resumeUrl: str):
-        with requests.get(resumeUrl) as res:
+        with requests.get(resumeUrl, timeout=(1, 10)) as res:
             if res.status_code != 200 or "---\ntitle" not in res.text:
                 raise Exception('Wrong data')
         self.full_resume = res.text

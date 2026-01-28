@@ -4,6 +4,9 @@ promptNote.txt
 jd/*
 config.json
 
+# Ignore VS Code
+.vscode/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

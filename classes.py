@@ -39,7 +39,7 @@ class LLM:
             print(f"{count} tokens used.", end='\n')
 
         # Remove em dashes and shave off the newline
-        result = result.lstrip('\n').replace("—", ",")
+        result = result.lstrip('\n').replace("—", ", ")
 
         return result
 

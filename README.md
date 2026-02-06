@@ -12,7 +12,7 @@ An AI-powered program that generates cover letter based on the job description.
 - [Tesseract-OCR](https://github.com/tesseract-ocr/tesseract) preinstalled
 
 ## How to use
-- Install the requirements.
+- Install the requirements with `./install`.
 - Create a `./jq` folder to put the job description image in.
 - Add a prompt to write in `promptNote.txt`.
 - Run `./prompt`. It will output to `result.txt`.
